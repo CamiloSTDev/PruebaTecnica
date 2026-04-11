@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="data/data.csproj" />
+  <Project Path="negocio/negocio.csproj" />
+  <Project Path="prueba-tecnica/web.csproj" />
+</Solution>
