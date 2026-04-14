@@ -1,9 +1,13 @@
 ﻿@model PruebaTecnica.data.Models.Marca
 @{
     ViewData["Title"] = "Nueva Marca";
+    var marcasDisponibles = ViewBag.Marcas as IEnumerable<PruebaTecnica.data.Models.Marca>;
 }
 
-<h2 class="mb-4"><i class="bi bi-tag"></i> Crear Nueva Marca</h2>
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="mb-0"><i class="bi bi-tag"></i> Crear Nueva Marca</h2>
+    <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2">Catálogo de marcas</span>
+</div>
 
 @if (TempData["Exito"] != null)
 {
@@ -14,21 +18,47 @@
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
-<div class="card" style="max-width: 500px;">
-    <div class="card-header bg-dark text-white">Datos de la Marca</div>
-    <div class="card-body">
-        <form asp-action="Crear" method="post" class="row g-3">
-            <div class="col-12">
-                <label class="form-label">Nombre de la Marca</label>
-                <input asp-for="Nombre" class="form-control" placeholder="Ej: Toyota, Chevrolet..." required />
-                <label class="form-label">Descripcion (opcional)</label>
-                <input asp-for="Descripcion" class="form-control" placeholder="Ej: Marca de autos japonesa..." />
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-dark text-white">Datos de la Marca</div>
+            <div class="card-body">
+                <form asp-action="Crear" method="post" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Nombre de la Marca</label>
+                        <input asp-for="Nombre" class="form-control" placeholder="Ej: Toyota, Chevrolet..." required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Descripción (opcional)</label>
+                        <input asp-for="Descripcion" class="form-control" placeholder="Ej: Marca de autos japonesa..." />
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-plus-circle"></i> Crear Marca
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-success w-100">
-                    <i class="bi bi-plus-circle"></i> Crear Marca
-                </button>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">Preview de marcas</div>
+            <div class="card-body">
+                @if (marcasDisponibles != null && marcasDisponibles.Any())
+                {
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var marcaDisponible in marcasDisponibles.Take(18))
+                        {
+                            <span class="badge text-bg-light border">@marcaDisponible.Nombre</span>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No hay marcas registradas todavía.</p>
+                }
             </div>
-        </form>
+        </div>
     </div>
 </div>

@@ -8,10 +8,16 @@ namespace PruebaTecnica.web.Controllers
     {
         private readonly IMarcaService _marcaService = marcaService;
 
+        private async Task CargarMarcasDisponiblesAsync()
+        {
+            ViewBag.Marcas = await _marcaService.GetAllAsync();
+        }
+
         [HttpGet]
         [ActionName("Crear")]
-        public IActionResult MostrarFormularioCrear()
+        public async Task<IActionResult> MostrarFormularioCrear()
         {
+            await CargarMarcasDisponiblesAsync();
             return View("Crear");
         }
 
@@ -23,11 +29,12 @@ namespace PruebaTecnica.web.Controllers
             {
                 await _marcaService.AddAsync(marca);
                 TempData["Exito"] = "Marca creada correctamente";
-                return RedirectToAction(nameof(MostrarFormularioCrear));
+                return RedirectToAction("Crear");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
+                await CargarMarcasDisponiblesAsync();
                 return View("Crear", marca);
             }
         }

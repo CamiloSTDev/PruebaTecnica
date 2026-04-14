@@ -10,6 +10,18 @@ namespace PruebaTecnica.negocio.Services
     {
         private readonly IMarcaRepository _marcaRepository = marcaRepository;
 
+        public async Task<IEnumerable<Marca>> GetAllAsync()
+        {
+            try
+            {
+                return await _marcaRepository.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en el servicio al obtener las marcas", ex);
+            }
+        }
+
         public async Task AddAsync(Marca marca)
         {
             try
