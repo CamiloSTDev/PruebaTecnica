@@ -1,34 +1,65 @@
 ﻿@model IEnumerable<PruebaTecnica.data.Models.DTOs.VehiculoVendidoDto>
 @{
     ViewData["Title"] = "Ventas por Vendedor";
+    var vendedoresDisponibles = ViewBag.Vendedores as IEnumerable<PruebaTecnica.data.Models.Vendedor>;
 }
 
-<h2 class="mb-4"><i class="bi bi-receipt"></i> Consultar Ventas por Vendedor</h2>
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="mb-0"><i class="bi bi-receipt"></i> Consultar Ventas por Vendedor</h2>
+    <span class="badge bg-primary-subtle text-primary-emphasis px-3 py-2">Consulta rápida</span>
+</div>
 
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
-<div class="card mb-4">
-    <div class="card-header bg-dark text-white">Buscar por Cédula</div>
-    <div class="card-body">
-        <form method="post" class="row g-3">
-            <div class="col-md-6">
-                <input type="text" name="cedula" class="form-control" placeholder="Ingrese la cédula" required />
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-dark text-white">Buscar por Cédula</div>
+            <div class="card-body">
+                <form method="post" class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" name="cedula" class="form-control" placeholder="Ingrese la cédula" required />
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-dark w-100">
+                            <i class="bi bi-search"></i> Consultar
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-dark w-100">
-                    <i class="bi bi-search"></i> Consultar
-                </button>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">Preview de vendedores</div>
+            <div class="card-body">
+                @if (vendedoresDisponibles != null && vendedoresDisponibles.Any())
+                {
+                    <div class="list-group list-group-flush small">
+                        @foreach (var vendedorDisponible in vendedoresDisponibles.Take(8))
+                        {
+                            <div class="list-group-item px-0">
+                                <div class="fw-semibold">@vendedorDisponible.Cedula</div>
+                                <div class="text-muted">@vendedorDisponible.Nombre @vendedorDisponible.Apellido</div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No hay vendedores disponibles para mostrar.</p>
+                }
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
 @if (Model != null && Model.Any())
 {
-    <div class="card">
+    <div class="card border-0 shadow-sm">
         <div class="card-header bg-dark text-white">
             Vehículos vendidos — Cédula: @ViewBag.Cedula
         </div>

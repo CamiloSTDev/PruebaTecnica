@@ -9,10 +9,16 @@ namespace PruebaTecnica.web.Controllers
         private readonly IVendedorService _vendedorService = vendedorService;
         private readonly IVentaService _ventaService = ventaService;
 
+        private async Task CargarVendedoresDisponiblesAsync()
+        {
+            ViewBag.Vendedores = await _vendedorService.GetAllAsync();
+        }
+
         [HttpGet]
         [ActionName("Editar")]
-        public IActionResult MostrarFormularioEdicion()
+        public async Task<IActionResult> MostrarFormularioEdicion()
         {
+            await CargarVendedoresDisponiblesAsync();
             return View("Editar");
         }
 
@@ -23,11 +29,13 @@ namespace PruebaTecnica.web.Controllers
             try
             {
                 var vendedor = await _vendedorService.GetByCedulaAsync(cedula);
+                await CargarVendedoresDisponiblesAsync();
                 return View("Editar", vendedor);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
+                await CargarVendedoresDisponiblesAsync();
                 return View("Editar");
             }
         }
@@ -40,19 +48,21 @@ namespace PruebaTecnica.web.Controllers
             {
                 await _vendedorService.UpdateAsync(vendedor);
                 TempData["Exito"] = "Vendedor actualizado correctamente";
-                return RedirectToAction(nameof(MostrarFormularioEdicion));
+                return RedirectToAction("Editar");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
+                await CargarVendedoresDisponiblesAsync();
                 return View("Editar", vendedor);
             }
         }
 
         [HttpGet]
         [ActionName("ConsultarVentas")]
-        public IActionResult MostrarConsultaVentas()
+        public async Task<IActionResult> MostrarConsultaVentas()
         {
+            await CargarVendedoresDisponiblesAsync();
             return View("ConsultarVentas");
         }
 
@@ -64,11 +74,13 @@ namespace PruebaTecnica.web.Controllers
             {
                 var vehiculos = await _ventaService.GetVehiculosPorVendedorAsync(cedula);
                 ViewBag.Cedula = cedula;
+                await CargarVendedoresDisponiblesAsync();
                 return View("ConsultarVentas", vehiculos);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
+                await CargarVendedoresDisponiblesAsync();
                 return View("ConsultarVentas");
             }
         }

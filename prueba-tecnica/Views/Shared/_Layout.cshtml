@@ -10,22 +10,26 @@
     <link rel="stylesheet" href="~/web.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    }
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Concesionario</a>
+            <a class="navbar-brand" href="~/">Concesionario</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Vendedores" asp-action="Editar">Actualizar Vendedor</a>
+                        <a class="nav-link @(currentController == "Vendedores" && currentAction == "Editar" ? "active fw-semibold" : "")" asp-controller="Vendedores" asp-action="Editar">Actualizar Vendedor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Vendedores" asp-action="ConsultarVentas">Ventas por Vendedor</a>
+                        <a class="nav-link @(currentController == "Vendedores" && currentAction == "ConsultarVentas" ? "active fw-semibold" : "")" asp-controller="Vendedores" asp-action="ConsultarVentas">Ventas por Vendedor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Marcas" asp-action="Crear">Nueva Marca</a>
+                        <a class="nav-link @(currentController == "Marcas" && currentAction == "Crear" ? "active fw-semibold" : "")" asp-controller="Marcas" asp-action="Crear">Nueva Marca</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Ventas" asp-action="Eliminar">Eliminar Venta</a>
+                        <a class="nav-link @(currentController == "Ventas" && currentAction == "Eliminar" ? "active fw-semibold" : "")" asp-controller="Ventas" asp-action="Eliminar">Eliminar Venta</a>
                     </li>
                 </ul>
             </div>
