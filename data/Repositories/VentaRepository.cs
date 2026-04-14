@@ -60,7 +60,8 @@ namespace PruebaTecnica.data.Repositories
 
         Task<IEnumerable<VehiculoVendidoDto>> IVentaRepository.GetVehiculosPorVendedorAsync(string cedula)
         {
-            throw new NotImplementedException();
+            return GetVehiculosPorVendedorAsync(cedula);
         }
+
     }
 }

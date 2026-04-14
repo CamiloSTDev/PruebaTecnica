@@ -31,12 +31,12 @@ namespace PruebaTecnica.web.Controllers
             {
                 await _ventaService.DeleteAsync(id);
                 TempData["Exito"] = "Venta eliminada correctamente";
-                return RedirectToAction(nameof(ListarVentas));
+                return RedirectToAction("Eliminar");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return RedirectToAction(nameof(ListarVentas));
+                return RedirectToAction("Eliminar");
             }
         }
     }

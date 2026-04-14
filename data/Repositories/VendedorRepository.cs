@@ -51,6 +51,14 @@ namespace PruebaTecnica.data.Repositories
         {
             try
             {
+                var local = _dbContext.Vendedores.Local.FirstOrDefault(v => v.Id == vendedor.Id);
+                if (local != null)
+                {
+                    // borra la entidad antigua guardada en cache para evitar conflictos
+                    _dbContext.Entry(local).State = EntityState.Detached;
+                }
+
+                //actualiza vendedor con los nuevos datos
                 _dbContext.Vendedores.Update(vendedor);
                 await _dbContext.SaveChangesAsync();
             }
